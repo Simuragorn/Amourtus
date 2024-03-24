@@ -11,13 +11,15 @@ namespace Assets.Scripts.Constants
         public const string AnimationStateKey = "state";
         public enum AnimationStateEnum
         {
-            Idle,
-            Move,
-            Attack_1,
-            Attack_2,
-            Attack_3,
-            Hit,
-            Death
+            Idle = 0,
+            Move = -1,
+            Hit = -5,
+            Death = -10,
+
+            Attack_1 = 1,
+            Attack_2 = 2,
+            Attack_3 = 3,
+            Attack_4 = 4,
         }
     }
 }

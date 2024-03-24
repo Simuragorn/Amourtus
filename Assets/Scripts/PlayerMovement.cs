@@ -1,14 +1,13 @@
 using Assets.Scripts.Constants;
 using System.Collections.Generic;
 using UnityEngine;
-using static Assets.Scripts.Constants.AnimationConstants;
 
 public class PlayerMovement : Movement
 {
     [SerializeField] private Animator animator;
-
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         movementBlockingLayers = new List<string> { LayersConstants.Obstacle, LayersConstants.Intruder };
     }
 
@@ -21,14 +20,6 @@ public class PlayerMovement : Movement
     private void HandleMovement()
     {
         float horizontalAxis = Input.GetAxisRaw("Horizontal");
-        if (horizontalAxis == 0)
-        {
-            animationState = AnimationStateEnum.Idle;
-        }
-        else
-        {
-            TryMove(horizontalAxis);
-        }
-        animator.SetInteger(AnimationStateKey, (int)animationState);
+        TryMove(horizontalAxis);
     }
 }
