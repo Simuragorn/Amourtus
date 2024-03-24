@@ -1,39 +1,34 @@
 using Assets.Scripts.Constants;
+using System.Collections.Generic;
 using UnityEngine;
+using static Assets.Scripts.Constants.AnimationConstants;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : Movement
 {
-    [SerializeField] private float minMovementDistance = 1f;
-    [SerializeField] private float movementSpeed = 4f;
-    [SerializeField] private float runningSpeed = 8f;
-    [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private Animator animator;
-    private bool isRunning;
 
-    const string isRunningAnimatorKey = "isRunning";
-
-    void Update()
+    private void Awake()
     {
-
-        float horizontalAxis = Input.GetAxisRaw("Horizontal");
-        if (horizontalAxis != 0)
-        {
-            spriteRenderer.flipX = horizontalAxis < 0;
-        }
-        isRunning = Input.GetKey(KeyCode.LeftShift);
-        animator.SetBool(isRunningAnimatorKey, isRunning);
-        var direction = new Vector2(horizontalAxis, 0);
-        float speed = isRunning ? runningSpeed : movementSpeed;
-        if (CanMove(direction))
-        {
-            transform.Translate(speed * Time.deltaTime * direction);
-        }
+        movementBlockingLayers = new List<string> { LayersConstants.Obstacle, LayersConstants.Intruder };
     }
 
-    private bool CanMove(Vector2 direction)
+    protected override void Update()
     {
-        int layerMask = LayerMask.GetMask(LayersConstants.Obstacle);
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, minMovementDistance, layerMask);
-        return hit.collider == null;
+        base.Update();
+        HandleMovement();
+    }
+
+    private void HandleMovement()
+    {
+        float horizontalAxis = Input.GetAxisRaw("Horizontal");
+        if (horizontalAxis == 0)
+        {
+            animationState = AnimationStateEnum.Idle;
+        }
+        else
+        {
+            TryMove(horizontalAxis);
+        }
+        animator.SetInteger(AnimationStateKey, (int)animationState);
     }
 }
