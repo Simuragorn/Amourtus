@@ -1,4 +1,6 @@
 using Assets.Scripts.Core;
+using Assets.Scripts.Dto;
+using System;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
 using static Assets.Scripts.Constants.AnimationConstants;
@@ -28,6 +30,51 @@ public abstract class Character : MonoBehaviour
         attackModule.Init(this);
         healthModule.Init(this);
         animationsModule.Init(this);
+
+        movementModule.OnMovementStarted += MovementModule_OnMovementStarted;
+        attackModule.OnAttackStarted += AttackModule_OnAttackStarted;
+        healthModule.OnDeath += HealthModule_OnDeath;
+        animationsModule.OnMakeDamage += AnimationsModule_OnMakeDamage;
+        animationsModule.OnFinishAttack += AnimationsModule_OnFinishAttack;
+        animationsModule.OnHitRecovered += AnimationsModule_OnHitRecovered;
+    }
+
+    private void MovementModule_OnMovementStarted(object sender, Vector2 translation)
+    {
+        transform.Translate(translation);
+        var moveAnimation = translation == default ? AnimationStateEnum.Idle : AnimationStateEnum.Move;
+        ChangeAnimationState(moveAnimation);
+    }
+
+    protected void AnimationsModule_OnHitRecovered(object sender, EventArgs e)
+    {
+        if (!isDead)
+        {
+            ChangeAnimationState(AnimationStateEnum.Idle);
+            ResumeModules();
+        }
+    }
+
+    protected void AnimationsModule_OnFinishAttack(object sender, EventArgs e)
+    {
+        attackModule.FinishAttack();
+        ChangeAnimationState(AnimationStateEnum.Idle);
+    }
+
+    protected void AnimationsModule_OnMakeDamage(object sender, EventArgs e)
+    {
+        attackModule.MakeDamage();
+    }
+
+    protected virtual void Update()
+    {
+        teleportationReloadingLeft = Mathf.Max(0, teleportationReloadingLeft - Time.deltaTime);
+        teleportationAvailable = teleportationReloadingLeft <= 0;
+    }
+
+    protected void AttackModule_OnAttackStarted(object sender, AttackType e)
+    {
+        ChangeAnimationState(e.animationState);
     }
 
     public void Flip(bool flipX)
@@ -45,34 +92,7 @@ public abstract class Character : MonoBehaviour
         gameObject.transform.position = new Vector2(spawnPoint.x, spawnPoint.y + spawnVerticalOffset);
     }
 
-    protected virtual void Update()
-    {
-        teleportationReloadingLeft = Mathf.Max(0, teleportationReloadingLeft - Time.deltaTime);
-        teleportationAvailable = teleportationReloadingLeft <= 0;
-    }
-
-    public void ChangeAttackState(AnimationStateEnum attackAnimationState)
-    {
-        ChangeAnimationState(attackAnimationState);
-    }
-
-    public void MakeDamage()
-    {
-        attackModule.MakeDamage();
-    }
-
-    public void FinishAttack()
-    {
-        attackModule.FinishAttack();
-        ChangeAnimationState(AnimationStateEnum.Idle);
-    }
-
-    public void ChangeMoveState(AnimationStateEnum movementAnimationState)
-    {
-        ChangeAnimationState(movementAnimationState);
-    }
-
-    public void StartDeath()
+    protected void HealthModule_OnDeath(object sender, EventArgs eventArgs)
     {
         isDead = true;
         ChangeAnimationState(AnimationStateEnum.Death);
@@ -81,7 +101,6 @@ public abstract class Character : MonoBehaviour
 
     public void GetHit(float damage)
     {
-        Debug.Log("Hit");
         if (!healthModule.IsPaused)
         {
             healthModule.GetHit(damage);
@@ -90,16 +109,6 @@ public abstract class Character : MonoBehaviour
                 ChangeAnimationState(AnimationStateEnum.Hit);
                 PauseModules(false);
             }
-        }
-    }
-
-    public void HitRecovered()
-    {
-        Debug.Log("Recover");
-        if (!isDead)
-        {
-            ChangeMoveState(AnimationStateEnum.Idle);
-            ResumeModules();
         }
     }
 
@@ -114,7 +123,7 @@ public abstract class Character : MonoBehaviour
     {
         movementModule.Resume();
         healthModule.Resume();
-        attackModule.Resume();        
+        attackModule.Resume();
     }
 
     protected void ChangeAnimationState(AnimationStateEnum newAnimationState)

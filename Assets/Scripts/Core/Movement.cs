@@ -1,10 +1,12 @@
 using Assets.Scripts.Core;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using static Assets.Scripts.Constants.AnimationConstants;
 
 public abstract class Movement : CharacterModule
 {
+    public event EventHandler<Vector2> OnMovementStarted;
     protected float minMovementDistance = 1f;
     protected float maxMovementDistance = 2f;
     protected float movementDistance;
@@ -36,18 +38,13 @@ public abstract class Movement : CharacterModule
 
     protected virtual void Awake()
     {
-        movementDistance = Random.Range(minMovementDistance, maxMovementDistance);
+        movementDistance = UnityEngine.Random.Range(minMovementDistance, maxMovementDistance);
     }
 
     protected virtual void TryMove(float horizontalAxis)
     {
         if (isPaused)
         {
-            return;
-        }
-        if (horizontalAxis == 0)
-        {
-            character.ChangeMoveState(AnimationStateEnum.Idle);
             return;
         }
 
@@ -57,22 +54,22 @@ public abstract class Movement : CharacterModule
             return;
         }
 
-        character.Flip(horizontalAxis < 0);
+        if (horizontalAxis != 0)
+        {
+            character.Flip(horizontalAxis < 0);
+        }
         var direction = new Vector2(horizontalAxis, 0);
         bool movementAllowed = CanMove(direction);
         if (movementAllowed && !previouslyMovementAllowed)
         {
             movementDelayLeft = movementDelay;
         }
+        Vector2 translation = default;
         if (movementAllowed && movementDelayLeft <= 0)
         {
-            transform.Translate(movementSpeed * Time.deltaTime * direction);
-            character.ChangeMoveState(AnimationStateEnum.Move);
+            translation = movementSpeed * Time.deltaTime * direction;
         }
-        else
-        {
-            character.ChangeMoveState(AnimationStateEnum.Idle);
-        }
+        OnMovementStarted?.Invoke(this, translation);
         previouslyMovementAllowed = movementAllowed;
     }
 

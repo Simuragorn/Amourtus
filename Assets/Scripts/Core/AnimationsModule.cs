@@ -1,18 +1,23 @@
-﻿namespace Assets.Scripts.Core
+﻿using System;
+
+namespace Assets.Scripts.Core
 {
     public class AnimationsModule : CharacterModule
     {
+        public event EventHandler OnMakeDamage;
+        public event EventHandler OnFinishAttack;
+        public event EventHandler OnHitRecovered;
         public void MakeDamage()
         {
-            character.MakeDamage();
+            OnMakeDamage?.Invoke(this, EventArgs.Empty);
         }
         public void FinishAttack()
         {
-            character.FinishAttack();
+            OnFinishAttack?.Invoke(this, EventArgs.Empty);
         }
         public void HitRecovered()
         {
-            character.HitRecovered();
+            OnHitRecovered?.Invoke(this, EventArgs.Empty);
         }
     }
 }

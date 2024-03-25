@@ -1,5 +1,6 @@
 using Assets.Scripts.Core;
 using Assets.Scripts.Dto;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -8,9 +9,18 @@ public abstract class Attack : CharacterModule
 {
     [SerializeField] private Collider2D attackRangeCollider;
     [SerializeField] private List<AttackType> attackTypes = new List<AttackType>();
+
+    public event EventHandler<AttackType> OnAttackStarted;
+
     private float reloadingTimeLeft = 0;
     private Character target = null;
     protected AttackType currentAttack = null;
+
+    protected void Update()
+    {
+        reloadingTimeLeft = Mathf.Max(reloadingTimeLeft - Time.deltaTime, 0);
+        TryAttack();
+    }
 
     public void MakeDamage()
     {
@@ -45,7 +55,7 @@ public abstract class Attack : CharacterModule
         TrySetTarget(collider);
     }
 
-    private void OnTriggerExit2D(Collider2D collider)
+    protected void OnTriggerExit2D(Collider2D collider)
     {
         TryRemoveTarget(collider);
     }
@@ -72,12 +82,6 @@ public abstract class Attack : CharacterModule
 
     protected abstract bool IsEnemy(Collider2D collider);
 
-    protected void Update()
-    {
-        reloadingTimeLeft = Mathf.Max(reloadingTimeLeft - Time.deltaTime, 0);
-        TryAttack();
-    }
-
     protected void TryAttack()
     {
         if (isPaused)
@@ -89,14 +93,14 @@ public abstract class Attack : CharacterModule
             if (attackTypes.Any())
             {
                 currentAttack = GetRandomAttack();
-                character.ChangeAttackState(currentAttack.animationState);
+                OnAttackStarted?.Invoke(this, currentAttack);
             }
         }
     }
 
     protected AttackType GetRandomAttack()
     {
-        int attackIndex = Random.Range(0, attackTypes.Count);
+        int attackIndex = UnityEngine.Random.Range(0, attackTypes.Count);
         return attackTypes[attackIndex];
     }
 }

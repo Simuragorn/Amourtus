@@ -1,10 +1,12 @@
 using Assets.Scripts.Core;
+using System;
 using UnityEngine;
 
 public abstract class Health : CharacterModule
 {
     [SerializeField] protected float maxHealth;
     [SerializeField] protected float health;
+    public EventHandler OnDeath;
 
     protected virtual void Awake()
     {
@@ -20,7 +22,7 @@ public abstract class Health : CharacterModule
         health -= damage;
         if (health <= 0)
         {
-            character.StartDeath();
+            OnDeath?.Invoke(this, EventArgs.Empty);
         }
     }
 }
