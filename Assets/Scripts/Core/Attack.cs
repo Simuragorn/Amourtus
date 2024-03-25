@@ -12,8 +12,9 @@ public abstract class Attack : CharacterModule
 
     public event EventHandler<AttackType> OnAttackStarted;
 
+    protected List<Character> targets = new List<Character>();
     private float reloadingTimeLeft = 0;
-    private Character target = null;
+    private Character currentTarget = null;
     protected AttackType currentAttack = null;
 
     protected void Update()
@@ -24,20 +25,24 @@ public abstract class Attack : CharacterModule
 
     public void MakeDamage()
     {
-        if (target != null)
+        if (currentTarget != null && currentAttack != null)
         {
-            target.GetHit(currentAttack.damage);
+            currentTarget.GetHit(currentAttack.damage);
         }
     }
 
     public void FinishAttack()
     {
-        reloadingTimeLeft = currentAttack.reloading;
-        currentAttack = null;
+        if (currentAttack != null)
+        {
+            reloadingTimeLeft = currentAttack.reloading;
+            currentAttack = null;
+        }
     }
     public override void Pause(bool disablePhysics)
     {
         base.Pause(disablePhysics);
+        currentAttack = null;
         if (disablePhysics)
         {
             attackRangeCollider.enabled = false;
@@ -64,7 +69,15 @@ public abstract class Attack : CharacterModule
     {
         if (IsEnemy(collider))
         {
-            target = collider.GetComponent<Character>();
+            var newTarget = collider.GetComponent<Character>();
+            if (!targets.Contains(newTarget))
+            {
+                targets.Add(newTarget);
+            }
+            if (currentTarget == null)
+            {
+                currentTarget = newTarget;
+            }
         }
     }
 
@@ -73,9 +86,13 @@ public abstract class Attack : CharacterModule
         if (IsEnemy(collider))
         {
             var lostTarget = collider.GetComponent<Character>();
-            if (lostTarget == target)
+            if (targets.Contains(lostTarget))
             {
-                target = null;
+                targets.Remove(lostTarget);
+            }
+            if (lostTarget == currentTarget)
+            {
+                currentTarget = targets.FirstOrDefault();
             }
         }
     }
@@ -84,11 +101,11 @@ public abstract class Attack : CharacterModule
 
     protected void TryAttack()
     {
-        if (isPaused)
+        if (isPaused || !character.CanAttack)
         {
             return;
         }
-        if (target != null && currentAttack == null && reloadingTimeLeft <= 0)
+        if (currentTarget != null && currentAttack == null && reloadingTimeLeft <= 0)
         {
             if (attackTypes.Any())
             {

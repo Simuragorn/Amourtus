@@ -1,30 +1,31 @@
 using Assets.Scripts.Core;
 using Assets.Scripts.Dto;
 using System;
+using System.Collections;
 using UnityEngine;
-using UnityEngine.TextCore.Text;
 using static Assets.Scripts.Constants.AnimationConstants;
 
 public abstract class Character : MonoBehaviour
 {
-    [SerializeField] private float teleportationReloading = 1f;
-    [SerializeField] private float spawnVerticalOffset = 0f;
+    [SerializeField] protected float teleportationReloading = 1f;
+    [SerializeField] protected float spawnVerticalOffset = 0f;
 
     protected AnimationStateEnum animationState = AnimationStateEnum.Idle;
-    [SerializeField] private Animator animator;
+    [SerializeField] protected Animator animator;
 
-    [SerializeField] private Health healthModule;
-    [SerializeField] private Movement movementModule;
-    [SerializeField] private Attack attackModule;
-    [SerializeField] private AnimationsModule animationsModule;
+    [SerializeField] protected Health healthModule;
+    [SerializeField] protected Movement movementModule;
+    [SerializeField] protected Attack attackModule;
+    [SerializeField] protected AnimationsModule animationsModule;
 
-    [SerializeField] private bool isDead = false;
-    private float teleportationReloadingLeft;
-    private bool teleportationAvailable = true;
+    [SerializeField] protected bool isDead = false;
+    protected float teleportationReloadingLeft;
+    protected bool teleportationAvailable = true;
+    protected bool isTeleportable = true;
     public bool TeleportationAvailable => teleportationAvailable;
     public AnimationStateEnum AnimationState => animationState;
 
-    protected void Awake()
+    protected virtual void Awake()
     {
         movementModule.Init(this);
         attackModule.Init(this);
@@ -68,14 +69,23 @@ public abstract class Character : MonoBehaviour
 
     protected virtual void Update()
     {
-        teleportationReloadingLeft = Mathf.Max(0, teleportationReloadingLeft - Time.deltaTime);
-        teleportationAvailable = teleportationReloadingLeft <= 0;
+        if (isTeleportable)
+        {
+            teleportationReloadingLeft = Mathf.Max(0, teleportationReloadingLeft - Time.deltaTime);
+            teleportationAvailable = teleportationReloadingLeft <= 0;
+        }
     }
 
     protected void AttackModule_OnAttackStarted(object sender, AttackType e)
     {
         ChangeAnimationState(e.animationState);
     }
+
+    public bool CanAttack =>
+        animationState == AnimationStateEnum.Idle || animationState == AnimationStateEnum.Move;
+
+    public bool CanMove =>
+        animationState == AnimationStateEnum.Idle || animationState == AnimationStateEnum.Move;
 
     public void Flip(bool flipX)
     {
@@ -86,17 +96,20 @@ public abstract class Character : MonoBehaviour
 
     public virtual void TeleportTo(Teleport teleport)
     {
-        Vector2 spawnPoint = teleport.SpawnPoint.position;
-        teleportationAvailable = false;
-        teleportationReloadingLeft = teleportationReloading;
-        gameObject.transform.position = new Vector2(spawnPoint.x, spawnPoint.y + spawnVerticalOffset);
+        if (isTeleportable)
+        {
+            Vector2 spawnPoint = teleport.SpawnPoint.position;
+            teleportationAvailable = false;
+            teleportationReloadingLeft = teleportationReloading;
+            gameObject.transform.position = new Vector2(spawnPoint.x, spawnPoint.y + spawnVerticalOffset);
+        }
     }
 
     protected void HealthModule_OnDeath(object sender, EventArgs eventArgs)
     {
         isDead = true;
-        ChangeAnimationState(AnimationStateEnum.Death);
         PauseModules(true);
+        ChangeAnimationState(AnimationStateEnum.Death);
     }
 
     public void GetHit(float damage)
@@ -106,8 +119,8 @@ public abstract class Character : MonoBehaviour
             healthModule.GetHit(damage);
             if (!isDead)
             {
-                ChangeAnimationState(AnimationStateEnum.Hit);
                 PauseModules(false);
+                ChangeAnimationState(AnimationStateEnum.TakeHit);
             }
         }
     }
@@ -128,7 +141,10 @@ public abstract class Character : MonoBehaviour
 
     protected void ChangeAnimationState(AnimationStateEnum newAnimationState)
     {
-        animationState = newAnimationState;
-        animator.SetInteger(AnimationStateKey, (int)animationState);
+        if (!isDead || newAnimationState == AnimationStateEnum.Death)
+        {
+            animationState = newAnimationState;
+            animator.SetInteger(AnimationStateKey, (int)animationState);
+        }
     }
 }

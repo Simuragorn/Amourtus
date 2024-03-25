@@ -43,13 +43,7 @@ public abstract class Movement : CharacterModule
 
     protected virtual void TryMove(float horizontalAxis)
     {
-        if (isPaused)
-        {
-            return;
-        }
-
-        if (character.AnimationState != AnimationStateEnum.Idle &&
-            character.AnimationState != AnimationStateEnum.Move)
+        if (isPaused || !character.CanMove)
         {
             return;
         }

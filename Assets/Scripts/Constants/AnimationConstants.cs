@@ -13,7 +13,7 @@ namespace Assets.Scripts.Constants
         {
             Idle = 0,
             Move = -1,
-            Hit = -5,
+            TakeHit = -5,
             Death = -10,
 
             Attack_1 = 1,

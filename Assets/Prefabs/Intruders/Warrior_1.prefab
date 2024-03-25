@@ -57,6 +57,7 @@ MonoBehaviour:
   movementModule: {fileID: 8870227250108011426}
   attackModule: {fileID: 1296567393090059685}
   animationsModule: {fileID: 6083626954428689221}
+  isDead: 0
   movement: {fileID: 8870227250108011426}
 --- !u!114 &8870227250108011426
 MonoBehaviour:
@@ -70,6 +71,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b09c4b1be168a13418324087a34d6e4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isPaused: 0
   movementSpeed: 4
   collider: {fileID: 6459130018973767827}
   rigidbody: {fileID: 8273750762139543808}
@@ -148,6 +150,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb6fa3ae4162b6549ba55e8230769d49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isPaused: 0
   maxHealth: 100
   health: 0
 --- !u!1 &2563826789329560768
@@ -246,7 +249,7 @@ Animator:
   m_GameObject: {fileID: 2563826789329560768}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: c7c22fd5a95b2924eafcef4da7f0985e, type: 2}
+  m_Controller: {fileID: 9100000, guid: e30fe33a09b03534899a4786a6323a57, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -269,6 +272,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07e73ea94f534d84888fe44d8c768615, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isPaused: 0
 --- !u!1 &3190487036335513868
 GameObject:
   m_ObjectHideFlags: 0
@@ -359,6 +363,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55f49f7d609a1d44da33c86f8c4520a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isPaused: 0
   attackRangeCollider: {fileID: 2347790495558094363}
   attackTypes:
   - animationState: 1
