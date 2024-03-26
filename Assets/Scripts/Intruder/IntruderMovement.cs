@@ -1,7 +1,6 @@
 using Assets.Scripts.Constants;
 using System.Collections.Generic;
 using UnityEngine;
-using static Assets.Scripts.Constants.AnimationConstants;
 
 public enum MovingDirectionType
 {

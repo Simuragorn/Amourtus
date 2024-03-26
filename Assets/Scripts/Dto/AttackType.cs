@@ -7,6 +7,7 @@ namespace Assets.Scripts.Dto
     public class AttackType
     {
         public AnimationConstants.AnimationStateEnum animationState;
+        public string description;
         public float reloading;
         public float damage;
     }

@@ -1,12 +1,12 @@
 using Assets.Scripts.Core;
 using Assets.Scripts.Dto;
 using System;
-using System.Collections;
 using UnityEngine;
 using static Assets.Scripts.Constants.AnimationConstants;
 
 public abstract class Character : MonoBehaviour
 {
+    [SerializeField] protected CharacterConfiguration configuration;
     [SerializeField] protected float teleportationReloading = 1f;
     [SerializeField] protected float spawnVerticalOffset = 0f;
 
@@ -24,12 +24,13 @@ public abstract class Character : MonoBehaviour
     protected bool isTeleportable = true;
     public bool TeleportationAvailable => teleportationAvailable;
     public AnimationStateEnum AnimationState => animationState;
+    public CharacterConfiguration Configuration => configuration;
 
     protected virtual void Awake()
     {
-        movementModule.Init(this);
-        attackModule.Init(this);
         healthModule.Init(this);
+        movementModule.Init(this);
+        attackModule.Init(this);        
         animationsModule.Init(this);
 
         movementModule.OnMovementStarted += MovementModule_OnMovementStarted;

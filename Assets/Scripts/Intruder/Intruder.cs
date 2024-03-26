@@ -3,7 +3,7 @@ using UnityEngine;
 public class Intruder : Character
 {
     [SerializeField] IntruderMovement movement;
-
+    public IntruderConfiguration IntruderConfiguration => Configuration as IntruderConfiguration;
     protected override void Awake()
     {
         base.Awake();

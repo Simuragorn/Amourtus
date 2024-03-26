@@ -2,7 +2,6 @@ using Assets.Scripts.Core;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using static Assets.Scripts.Constants.AnimationConstants;
 
 public abstract class Movement : CharacterModule
 {
@@ -10,7 +9,7 @@ public abstract class Movement : CharacterModule
     protected float minMovementDistance = 1f;
     protected float maxMovementDistance = 2f;
     protected float movementDistance;
-    [SerializeField] protected float movementSpeed = 4f;
+    protected float movementSpeed;
     [SerializeField] protected Collider2D collider;
     [SerializeField] protected Rigidbody2D rigidbody;
     protected List<string> movementBlockingLayers = new List<string>();
@@ -18,6 +17,12 @@ public abstract class Movement : CharacterModule
     private const float movementDelay = 0.3f;
     private float movementDelayLeft;
     private bool previouslyMovementAllowed = true;
+
+    public override void Init(Character currentCharacter)
+    {
+        base.Init(currentCharacter);
+        movementSpeed = currentCharacter.Configuration.MovementSpeed;
+    }
 
     public override void Pause(bool disablePhysics)
     {

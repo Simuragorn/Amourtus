@@ -4,12 +4,14 @@ using UnityEngine;
 
 public abstract class Health : CharacterModule
 {
-    [SerializeField] protected float maxHealth;
-    [SerializeField] protected float health;
+    protected float maxHealth;
+    protected float health;
     public EventHandler OnDeath;
 
-    protected virtual void Awake()
+    public override void Init(Character currentCharacter)
     {
+        base.Init(currentCharacter);
+        maxHealth = character.Configuration.MaxHealth;
         health = maxHealth;
     }
     public void GetHit(float damage)

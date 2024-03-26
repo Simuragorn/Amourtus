@@ -7,7 +7,7 @@ namespace Assets.Scripts.Core
         [SerializeField] protected bool isPaused = false;
         protected Character character;
         public bool IsPaused => isPaused;
-        public void Init(Character currentCharacter)
+        public virtual void Init(Character currentCharacter)
         {
             character = currentCharacter;
         }

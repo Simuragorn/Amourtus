@@ -7,15 +7,20 @@ using UnityEngine;
 
 public abstract class Attack : CharacterModule
 {
-    [SerializeField] private Collider2D attackRangeCollider;
-    [SerializeField] private List<AttackType> attackTypes = new List<AttackType>();
-
+    [SerializeField] protected Collider2D attackRangeCollider;
     public event EventHandler<AttackType> OnAttackStarted;
 
+    protected List<AttackType> attackTypes = new List<AttackType>();
     protected List<Character> targets = new List<Character>();
-    private float reloadingTimeLeft = 0;
-    private Character currentTarget = null;
+    protected float reloadingTimeLeft = 0;
+    protected Character currentTarget = null;
     protected AttackType currentAttack = null;
+
+    public override void Init(Character currentCharacter)
+    {
+        base.Init(currentCharacter);
+        attackTypes = character.Configuration.AttackTypes;
+    }
 
     protected void Update()
     {

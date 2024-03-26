@@ -51,7 +51,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isPaused: 0
-  movementSpeed: 8
   collider: {fileID: 2838946052965116326}
   rigidbody: {fileID: 4901160860875937715}
   animator: {fileID: 2227230600805805428}
@@ -137,6 +136,7 @@ MonoBehaviour:
   attackModule: {fileID: 7207727093521706804}
   animationsModule: {fileID: 8967112322667890388}
   isDead: 0
+  configuration: {fileID: 11400000, guid: c92cd0d229278a74b9fd93d65443d5d3, type: 2}
 --- !u!114 &8971331061832518418
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -150,8 +150,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isPaused: 0
-  maxHealth: 100
-  health: 0
 --- !u!1 &3876989512446604507
 GameObject:
   m_ObjectHideFlags: 0
@@ -244,13 +242,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isPaused: 0
   attackRangeCollider: {fileID: 6281959149022960386}
-  attackTypes:
-  - animationState: 1
-    reloading: 1
-    damage: 30
-  - animationState: 2
-    reloading: 1
-    damage: 40
 --- !u!1 &8040232967172835223
 GameObject:
   m_ObjectHideFlags: 0
