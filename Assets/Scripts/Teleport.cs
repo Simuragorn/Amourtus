@@ -1,26 +1,35 @@
 using UnityEngine;
 
-public enum TeleportType
+public enum TeleportTypeEnum
 {
-    Left,
-    Right
+    Start,
+    End
 }
-
 public class Teleport : MonoBehaviour
 {
     public Teleport ConnectedTeleport { get; set; }
     [SerializeField] private Collider2D trigger;
     [SerializeField] private Transform spawnPoint;
-    [SerializeField] private TeleportType type;
+    protected TeleportTypeEnum teleportType;
+    protected Floor floor;
+
+    public TeleportTypeEnum TeleportType => teleportType;
+    public Floor Floor => floor;
     public Transform SpawnPoint => spawnPoint;
-    public TeleportType Type => type;
+
+
+    public void Init(Floor currentFloor, TeleportTypeEnum newTeleportType)
+    {
+        floor = currentFloor;
+        teleportType = newTeleportType;
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         var character = collision.GetComponent<Character>();
         if (character != null && character.TeleportationAvailable)
         {
-            character.TeleportTo(ConnectedTeleport);
+            character.Teleport(this, ConnectedTeleport);
         }
     }
 }

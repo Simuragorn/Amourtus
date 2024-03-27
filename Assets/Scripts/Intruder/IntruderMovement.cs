@@ -10,7 +10,8 @@ public enum MovingDirectionType
 
 public class IntruderMovement : Movement
 {
-    [SerializeField] private MovingDirectionType movingDirection = MovingDirectionType.Left;
+    protected MovingDirectionType movingDirection;
+    protected Intruder intruder => character as Intruder;
 
     protected override void Awake()
     {

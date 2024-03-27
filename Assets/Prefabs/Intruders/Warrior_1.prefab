@@ -50,6 +50,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76543384956cd3e4782ee5514484e5db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  configuration: {fileID: 11400000, guid: b683b5a7de244da41adcfc5a3f7979d7, type: 2}
   teleportationReloading: 1
   spawnVerticalOffset: -0.8
   animator: {fileID: 8185900714161566862}
@@ -59,6 +60,7 @@ MonoBehaviour:
   animationsModule: {fileID: 6083626954428689221}
   isDead: 0
   movement: {fileID: 8870227250108011426}
+  morale: 0
 --- !u!114 &8870227250108011426
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -72,10 +74,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isPaused: 0
-  movementSpeed: 4
   collider: {fileID: 6459130018973767827}
   rigidbody: {fileID: 8273750762139543808}
-  movingDirection: 0
 --- !u!70 &6459130018973767827
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -127,7 +127,7 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 10b39b3ac5e0f0c4da9a013451e483b5, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -151,8 +151,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isPaused: 0
-  maxHealth: 100
-  health: 0
 --- !u!1 &2563826789329560768
 GameObject:
   m_ObjectHideFlags: 0
@@ -365,16 +363,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isPaused: 0
   attackRangeCollider: {fileID: 2347790495558094363}
-  attackTypes:
-  - animationState: 1
-    reloading: 2
-    damage: 1
-  - animationState: 2
-    reloading: 2
-    damage: 5
-  - animationState: 3
-    reloading: 2
-    damage: 5
-  - animationState: 4
-    reloading: 2
-    damage: 4

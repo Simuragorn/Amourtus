@@ -30,7 +30,7 @@ public abstract class Character : MonoBehaviour
     {
         healthModule.Init(this);
         movementModule.Init(this);
-        attackModule.Init(this);        
+        attackModule.Init(this);
         animationsModule.Init(this);
 
         movementModule.OnMovementStarted += MovementModule_OnMovementStarted;
@@ -95,11 +95,11 @@ public abstract class Character : MonoBehaviour
         transform.localScale = localScale;
     }
 
-    public virtual void TeleportTo(Teleport teleport)
+    public virtual void Teleport(Teleport from, Teleport to)
     {
-        if (isTeleportable)
+        if (isTeleportable && to != null)
         {
-            Vector2 spawnPoint = teleport.SpawnPoint.position;
+            Vector2 spawnPoint = to.SpawnPoint.position;
             teleportationAvailable = false;
             teleportationReloadingLeft = teleportationReloading;
             gameObject.transform.position = new Vector2(spawnPoint.x, spawnPoint.y + spawnVerticalOffset);
@@ -113,7 +113,7 @@ public abstract class Character : MonoBehaviour
         ChangeAnimationState(AnimationStateEnum.Death);
     }
 
-    public void GetHit(float damage)
+    public virtual void GetHit(float damage)
     {
         if (!healthModule.IsPaused)
         {

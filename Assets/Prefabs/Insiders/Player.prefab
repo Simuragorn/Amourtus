@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 8293195089256538495}
   - component: {fileID: 4901160860875937715}
   - component: {fileID: 2838946052965116326}
-  - component: {fileID: 5293823107078494678}
   - component: {fileID: 8971331061832518418}
+  - component: {fileID: 2813519293658815653}
   m_Layer: 9
   m_Name: Player
   m_TagString: Untagged
@@ -116,27 +116,6 @@ CapsuleCollider2D:
   m_Offset: {x: 0.017568588, y: -0.23}
   m_Size: {x: 1.1324699, y: 5.259303}
   m_Direction: 0
---- !u!114 &5293823107078494678
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3480761816166887682}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c0d60b3ab57c7644580dd137d7d210e6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  teleportationReloading: 1
-  spawnVerticalOffset: 0
-  animator: {fileID: 2227230600805805428}
-  healthModule: {fileID: 8971331061832518418}
-  movementModule: {fileID: 8293195089256538495}
-  attackModule: {fileID: 7207727093521706804}
-  animationsModule: {fileID: 8967112322667890388}
-  isDead: 0
-  configuration: {fileID: 11400000, guid: c92cd0d229278a74b9fd93d65443d5d3, type: 2}
 --- !u!114 &8971331061832518418
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -150,6 +129,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isPaused: 0
+--- !u!114 &2813519293658815653
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3480761816166887682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c923a8bbd9e00c442adb2258a5334797, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  configuration: {fileID: 11400000, guid: c92cd0d229278a74b9fd93d65443d5d3, type: 2}
+  teleportationReloading: 1
+  spawnVerticalOffset: 0
+  animator: {fileID: 2227230600805805428}
+  healthModule: {fileID: 8971331061832518418}
+  movementModule: {fileID: 8293195089256538495}
+  attackModule: {fileID: 7207727093521706804}
+  animationsModule: {fileID: 8967112322667890388}
+  isDead: 0
 --- !u!1 &3876989512446604507
 GameObject:
   m_ObjectHideFlags: 0
