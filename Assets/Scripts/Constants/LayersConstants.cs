@@ -10,6 +10,7 @@ namespace Assets.Scripts.Constants
     {
         public const string Default = "Default";
         public const string Obstacle = "Obstacle";
+        public const string InsiderObstacle = "InsiderObstacle";
         public const string Intruder = "Intruder";
         public const string Insider = "Insider";
     }

@@ -9,14 +9,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7619512013975309362}
-  - component: {fileID: 7028135518637186389}
-  - component: {fileID: 8870227250108011426}
   - component: {fileID: 6459130018973767827}
   - component: {fileID: 8273750762139543808}
-  - component: {fileID: 6657897036105030174}
+  - component: {fileID: 6430290619376786965}
+  - component: {fileID: 8630904265072760741}
+  - component: {fileID: 7226934743493630513}
   m_Layer: 8
   m_Name: Warrior_1
-  m_TagString: Untagged
+  m_TagString: Intruder
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -38,44 +38,6 @@ Transform:
   - {fileID: 181729917796408819}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7028135518637186389
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 192849905018205565}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76543384956cd3e4782ee5514484e5db, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  configuration: {fileID: 11400000, guid: b683b5a7de244da41adcfc5a3f7979d7, type: 2}
-  teleportationReloading: 1
-  spawnVerticalOffset: -0.8
-  animator: {fileID: 8185900714161566862}
-  healthModule: {fileID: 6657897036105030174}
-  movementModule: {fileID: 8870227250108011426}
-  attackModule: {fileID: 1296567393090059685}
-  animationsModule: {fileID: 6083626954428689221}
-  isDead: 0
-  movement: {fileID: 8870227250108011426}
-  morale: 0
---- !u!114 &8870227250108011426
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 192849905018205565}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b09c4b1be168a13418324087a34d6e4a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isPaused: 0
-  collider: {fileID: 6459130018973767827}
-  rigidbody: {fileID: 8273750762139543808}
 --- !u!70 &6459130018973767827
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -138,7 +100,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &6657897036105030174
+--- !u!114 &6430290619376786965
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -147,10 +109,47 @@ MonoBehaviour:
   m_GameObject: {fileID: 192849905018205565}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bb6fa3ae4162b6549ba55e8230769d49, type: 3}
+  m_Script: {fileID: 11500000, guid: fbd1c252787948a438c2c372bf34c573, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  configuration: {fileID: 11400000, guid: b683b5a7de244da41adcfc5a3f7979d7, type: 2}
+  teleportationReloading: 1
+  spawnVerticalOffset: 0
+  animator: {fileID: 8185900714161566862}
+  healthModule: {fileID: 8630904265072760741}
+  movementModule: {fileID: 7226934743493630513}
+  attackModule: {fileID: 3916361601311634097}
+  animationsModule: {fileID: 6083626954428689221}
+  isDead: 0
+  morale: 0
+--- !u!114 &8630904265072760741
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 192849905018205565}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a2d05d8427e4e3428b9539e1b94ac16, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   isPaused: 0
+--- !u!114 &7226934743493630513
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 192849905018205565}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58b4ef27647485a48a695694c727658e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isPaused: 0
+  collider: {fileID: 6459130018973767827}
+  rigidbody: {fileID: 8273750762139543808}
 --- !u!1 &2563826789329560768
 GameObject:
   m_ObjectHideFlags: 0
@@ -281,7 +280,7 @@ GameObject:
   m_Component:
   - component: {fileID: 181729917796408819}
   - component: {fileID: 2347790495558094363}
-  - component: {fileID: 1296567393090059685}
+  - component: {fileID: 3916361601311634097}
   m_Layer: 10
   m_Name: AttackModule
   m_TagString: Untagged
@@ -349,7 +348,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 3.5843391, y: 3.0604868}
   m_EdgeRadius: 0
---- !u!114 &1296567393090059685
+--- !u!114 &3916361601311634097
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -358,7 +357,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3190487036335513868}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 55f49f7d609a1d44da33c86f8c4520a6, type: 3}
+  m_Script: {fileID: 11500000, guid: 12f2bfb72115ffe418bfc4f892ae8052, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   isPaused: 0

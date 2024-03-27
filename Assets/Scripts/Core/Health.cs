@@ -5,7 +5,7 @@ using UnityEngine;
 public abstract class Health : CharacterModule
 {
     protected float maxHealth;
-    protected float health;
+    [SerializeField] protected float health;
     public EventHandler OnDeath;
 
     public override void Init(Character currentCharacter)

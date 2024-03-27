@@ -92,13 +92,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isPaused: 0
   attackRangeCollider: {fileID: 6334493166107511594}
-  attackTypes:
-  - animationState: 1
-    reloading: 1
-    damage: 10
-  - animationState: 2
-    reloading: 0.5
-    damage: 5
 --- !u!1 &6825112251762498309
 GameObject:
   m_ObjectHideFlags: 0
@@ -235,7 +228,7 @@ GameObject:
   - component: {fileID: 6514187540463978063}
   m_Layer: 9
   m_Name: Skeleton
-  m_TagString: Untagged
+  m_TagString: Insider
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -331,6 +324,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0d60b3ab57c7644580dd137d7d210e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  configuration: {fileID: 0}
   teleportationReloading: 1
   spawnVerticalOffset: 0
   animator: {fileID: 9113095381334730055}
@@ -352,8 +346,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isPaused: 0
-  maxHealth: 50
-  health: 0
 --- !u!114 &6514187540463978063
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -367,7 +359,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isPaused: 0
-  movementSpeed: 4
   collider: {fileID: 7060386512554343114}
   rigidbody: {fileID: 6090998464152080835}
   movingDirection: 1

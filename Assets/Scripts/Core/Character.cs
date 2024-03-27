@@ -25,6 +25,8 @@ public abstract class Character : MonoBehaviour
     public bool TeleportationAvailable => teleportationAvailable;
     public AnimationStateEnum AnimationState => animationState;
     public CharacterConfiguration Configuration => configuration;
+    protected Floor floor;
+    [SerializeField] protected bool tookHit = false;
 
     protected virtual void Awake()
     {
@@ -41,7 +43,16 @@ public abstract class Character : MonoBehaviour
         animationsModule.OnHitRecovered += AnimationsModule_OnHitRecovered;
     }
 
-    private void MovementModule_OnMovementStarted(object sender, Vector2 translation)
+    protected virtual void Update()
+    {
+        if (isTeleportable)
+        {
+            teleportationReloadingLeft = Mathf.Max(0, teleportationReloadingLeft - Time.deltaTime);
+            teleportationAvailable = teleportationReloadingLeft <= 0;
+        }
+    }
+
+    protected void MovementModule_OnMovementStarted(object sender, Vector2 translation)
     {
         transform.Translate(translation);
         var moveAnimation = translation == default ? AnimationStateEnum.Idle : AnimationStateEnum.Move;
@@ -52,6 +63,7 @@ public abstract class Character : MonoBehaviour
     {
         if (!isDead)
         {
+            tookHit = false;
             ChangeAnimationState(AnimationStateEnum.Idle);
             ResumeModules();
         }
@@ -68,13 +80,9 @@ public abstract class Character : MonoBehaviour
         attackModule.MakeDamage();
     }
 
-    protected virtual void Update()
+    public virtual void SetFloor(Floor currentFloor)
     {
-        if (isTeleportable)
-        {
-            teleportationReloadingLeft = Mathf.Max(0, teleportationReloadingLeft - Time.deltaTime);
-            teleportationAvailable = teleportationReloadingLeft <= 0;
-        }
+        floor = currentFloor;
     }
 
     protected void AttackModule_OnAttackStarted(object sender, AttackType e)
@@ -106,17 +114,18 @@ public abstract class Character : MonoBehaviour
         }
     }
 
-    protected void HealthModule_OnDeath(object sender, EventArgs eventArgs)
+    protected virtual void HealthModule_OnDeath(object sender, EventArgs eventArgs)
     {
         isDead = true;
         PauseModules(true);
         ChangeAnimationState(AnimationStateEnum.Death);
     }
 
-    public virtual void GetHit(float damage)
+    public virtual void TakeHit(float damage)
     {
         if (!healthModule.IsPaused)
         {
+            tookHit = true;
             healthModule.GetHit(damage);
             if (!isDead)
             {
@@ -142,10 +151,23 @@ public abstract class Character : MonoBehaviour
 
     protected void ChangeAnimationState(AnimationStateEnum newAnimationState)
     {
-        if (!isDead || newAnimationState == AnimationStateEnum.Death)
+        if (IsNewAnimationStateValid(newAnimationState))
         {
             animationState = newAnimationState;
             animator.SetInteger(AnimationStateKey, (int)animationState);
         }
+    }
+
+    protected bool IsNewAnimationStateValid(AnimationStateEnum animationState)
+    {
+        if (isDead)
+        {
+            return animationState == AnimationStateEnum.Death;
+        }
+        if (tookHit)
+        {
+            return animationState == AnimationStateEnum.TakeHit;
+        }        
+        return !isDead;
     }
 }

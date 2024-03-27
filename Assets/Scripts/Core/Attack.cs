@@ -32,7 +32,7 @@ public abstract class Attack : CharacterModule
     {
         if (currentTarget != null && currentAttack != null)
         {
-            currentTarget.GetHit(currentAttack.damage);
+            currentTarget.TakeHit(currentAttack.damage);
         }
     }
 
