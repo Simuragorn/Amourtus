@@ -18,6 +18,8 @@ public abstract class Character : MonoBehaviour
     [SerializeField] protected Attack attackModule;
     [SerializeField] protected AnimationsModule animationsModule;
 
+    public event EventHandler<Character> OnDeath;
+
     [SerializeField] protected bool isDead = false;
     protected float teleportationReloadingLeft;
     protected bool teleportationAvailable = true;
@@ -87,7 +89,7 @@ public abstract class Character : MonoBehaviour
 
     protected void AttackModule_OnAttackStarted(object sender, AttackType e)
     {
-        ChangeAnimationState(e.animationState);
+        ChangeAnimationState(e.AnimationState);
     }
 
     public bool CanAttack =>
@@ -119,6 +121,7 @@ public abstract class Character : MonoBehaviour
         isDead = true;
         PauseModules(true);
         ChangeAnimationState(AnimationStateEnum.Death);
+        OnDeath?.Invoke(this, this);
     }
 
     public virtual void TakeHit(float damage)
@@ -167,7 +170,7 @@ public abstract class Character : MonoBehaviour
         if (tookHit)
         {
             return animationState == AnimationStateEnum.TakeHit;
-        }        
+        }
         return !isDead;
     }
 }

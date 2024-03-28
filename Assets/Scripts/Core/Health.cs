@@ -6,7 +6,7 @@ public abstract class Health : CharacterModule
 {
     protected float maxHealth;
     [SerializeField] protected float health;
-    public EventHandler OnDeath;
+    public event EventHandler OnDeath;
 
     public override void Init(Character currentCharacter)
     {

@@ -13,23 +13,24 @@ MonoBehaviour:
   m_Name: Warrior1
   m_EditorClassIdentifier: 
   CharacterName: "\u0412\u043E\u0438\u043D"
-  maxHealth: 50
+  maxHealth: 1
   movementSpeed: 4
   attackTypes:
-  - animationState: 1
-    description: 
-    reloading: 2
-    damage: 5
-  - animationState: 2
-    description: 
-    reloading: 2
-    damage: 5
-  - animationState: 3
-    description: 
-    reloading: 2
-    damage: 5
-  - animationState: 4
-    description: 
-    reloading: 2
-    damage: 5
+  - AnimationState: 1
+    Description: 
+    Reloading: 3
+    Damage: 5
+  - AnimationState: 2
+    Description: 
+    Reloading: 3
+    Damage: 5
+  - AnimationState: 3
+    Description: 
+    Reloading: 3
+    Damage: 5
+  - AnimationState: 4
+    Description: 
+    Reloading: 3
+    Damage: 5
   maxMorale: 50
+  soulType: 0

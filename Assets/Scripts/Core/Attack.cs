@@ -32,7 +32,7 @@ public abstract class Attack : CharacterModule
     {
         if (currentTarget != null && currentAttack != null)
         {
-            currentTarget.TakeHit(currentAttack.damage);
+            currentTarget.TakeHit(currentAttack.Damage);
         }
     }
 
@@ -40,7 +40,7 @@ public abstract class Attack : CharacterModule
     {
         if (currentAttack != null)
         {
-            reloadingTimeLeft = currentAttack.reloading;
+            reloadingTimeLeft = currentAttack.Reloading;
             currentAttack = null;
         }
     }

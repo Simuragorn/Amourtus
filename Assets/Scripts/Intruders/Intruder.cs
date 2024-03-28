@@ -1,3 +1,4 @@
+using Assets.Scripts.Dto;
 using System;
 using UnityEngine;
 using static Assets.Scripts.Constants.AnimationConstants;
@@ -13,15 +14,13 @@ public abstract class Intruder : Character
     private IntruderHealth intruderHealthModule => healthModule as IntruderHealth;
     private IntruderAttack intruderAttackModule => attackModule as IntruderAttack;
 
-    [SerializeField] protected float morale;
-    protected float maxMorale;
+    protected float morale;
     public IntruderConfiguration IntruderConfiguration => Configuration as IntruderConfiguration;
 
     protected IntruderResolveStateEnum intruderResolveState;
     protected override void Awake()
     {
         base.Awake();
-        maxMorale = IntruderConfiguration.MaxMorale;
         morale = IntruderConfiguration.MaxMorale;
         isTeleportable = true;
     }
@@ -40,16 +39,23 @@ public abstract class Intruder : Character
     public override void SetFloor(Floor currentFloor)
     {
         base.SetFloor(currentFloor);
+        currentFloor.AddIntruder(this);
         UpdateTarget();
     }
 
     public override void TakeHit(float damage)
     {
-        base.TakeHit(damage);
         if (!healthModule.IsPaused)
         {
+            tookHit = true;
+            healthModule.GetHit(damage);
             ChangeMorale(-damage);
-        }        
+            if (!isDead)
+            {
+                PauseModules(false);
+                ChangeAnimationState(AnimationStateEnum.TakeHit);
+            }
+        }     
     }
 
     protected void ChangeMorale(float change)
@@ -67,7 +73,7 @@ public abstract class Intruder : Character
 
     protected void UpdateResolveState()
     {
-        float moralePercentage = morale / maxMorale * 100;
+        float moralePercentage = morale / IntruderConfiguration.MaxMorale * 100;
         if (moralePercentage > 50)
         {
             intruderResolveState = IntruderResolveStateEnum.Advance;

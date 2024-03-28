@@ -1,3 +1,5 @@
+using Assets.Scripts.Dto;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,6 +12,8 @@ public class Floor : MonoBehaviour
 
     public Teleport FloorStartTeleport => floorStartTeleport;
     public Teleport FloorEndTeleport => floorEndTeleport;
+
+    public event EventHandler<SoulTypeEnum> OnSoulGet;
 
     protected List<Insider> insiders = new List<Insider>();
     protected List<Intruder> intruders = new List<Intruder>();
@@ -33,7 +37,13 @@ public class Floor : MonoBehaviour
         if (!intruders.Contains(intruder))
         {
             intruders.Add(intruder);
+            intruder.OnDeath += Intruder_OnDeath;
         }
+    }
+
+    private void Intruder_OnDeath(object sender, Character e)
+    {
+        OnSoulGet?.Invoke(this, (e as Intruder).IntruderConfiguration.SoulType);
     }
 
     public void RemoveIntruder(Intruder intruder)
@@ -41,6 +51,7 @@ public class Floor : MonoBehaviour
         if (intruders.Contains(intruder))
         {
             intruders.Remove(intruder);
+            intruder.OnDeath -= Intruder_OnDeath;
         }
     }
 

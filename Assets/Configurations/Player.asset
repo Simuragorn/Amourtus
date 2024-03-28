@@ -16,19 +16,19 @@ MonoBehaviour:
   maxHealth: 10000
   movementSpeed: 8
   attackTypes:
-  - animationState: 1
-    description: 
-    reloading: 0
-    damage: 10
-  - animationState: 2
-    description: 
-    reloading: 0
-    damage: 10
-  - animationState: 3
-    description: 
-    reloading: 0
-    damage: 10
-  - animationState: 4
-    description: 
-    reloading: 0
-    damage: 10
+  - AnimationState: 1
+    Description: 
+    Reloading: 3
+    Damage: 10
+  - AnimationState: 2
+    Description: 
+    Reloading: 3
+    Damage: 10
+  - AnimationState: 3
+    Description: 
+    Reloading: 3
+    Damage: 10
+  - AnimationState: 4
+    Description: 
+    Reloading: 3
+    Damage: 10

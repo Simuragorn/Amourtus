@@ -6,9 +6,9 @@ namespace Assets.Scripts.Dto
     [Serializable]
     public class AttackType
     {
-        public AnimationConstants.AnimationStateEnum animationState;
-        public string description;
-        public float reloading;
-        public float damage;
+        public AnimationConstants.AnimationStateEnum AnimationState;
+        public string Description;
+        public float Reloading;
+        public float Damage;
     }
 }
