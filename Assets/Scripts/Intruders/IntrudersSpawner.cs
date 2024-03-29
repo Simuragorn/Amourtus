@@ -10,7 +10,7 @@ public class IntrudersSpawner : MonoBehaviour
     [SerializeField] protected Floor spawnFloor;
     [SerializeField] protected Transform spawnPoint;
 
-    private void Awake()
+    public void SpawnIntruders()
     {
         StartCoroutine(SpawnAll());
     }

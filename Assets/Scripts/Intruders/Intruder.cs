@@ -23,6 +23,26 @@ public abstract class Intruder : Character
         base.Awake();
         morale = IntruderConfiguration.MaxMorale;
         isTeleportable = true;
+        var dayPhaseManager = FindObjectOfType<DayPhaseManager>();
+        dayPhaseManager.OnDayPhaseChanged += Intruder_OnDayPhaseChanged;
+        if (dayPhaseManager.CurrentPhase == DayPhaseEnum.Night ||
+            dayPhaseManager.CurrentPhase == DayPhaseEnum.LateNight)
+        {
+            SetMoraleToZero();
+        }
+    }
+
+    protected void Intruder_OnDayPhaseChanged(object sender, DayPhaseEnum phase)
+    {
+        if (phase == DayPhaseEnum.Night)
+        {
+            SetMoraleToZero();
+        }
+    }
+
+    protected void SetMoraleToZero()
+    {
+        ChangeMorale(-morale);
     }
 
     protected override void HealthModule_OnDeath(object sender, EventArgs eventArgs)
@@ -34,6 +54,7 @@ public abstract class Intruder : Character
     protected void OnDestroy()
     {
         floor.RemoveIntruder(this);
+        FindObjectOfType<DayPhaseManager>().OnDayPhaseChanged -= Intruder_OnDayPhaseChanged;
     }
 
     public override void SetFloor(Floor currentFloor)
@@ -55,7 +76,7 @@ public abstract class Intruder : Character
                 PauseModules(false);
                 ChangeAnimationState(AnimationStateEnum.TakeHit);
             }
-        }     
+        }
     }
 
     protected void ChangeMorale(float change)
