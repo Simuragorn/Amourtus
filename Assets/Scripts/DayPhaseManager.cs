@@ -20,6 +20,13 @@ public class DayPhaseManager : MonoBehaviour
     [SerializeField] protected GameObject sun;
     [SerializeField] protected GameObject moon;
 
+    [SerializeField] protected SpriteRenderer dayPhaseLight;
+    [SerializeField] protected Color dayLightColor;
+    [SerializeField] protected Color nightLightColor;
+    [SerializeField] protected Color noLightColor;
+
+    [SerializeField] protected float phaseProgress;
+
     protected DayPhaseEnum currentPhase;
     protected float risingSpeed;
 
@@ -55,6 +62,7 @@ public class DayPhaseManager : MonoBehaviour
             }
         }
         UpdatePhase();
+        UpdatePhaseLight();
         Vector2 translation = risingSpeed * Time.deltaTime * Vector2.up;
         switch (currentPhase)
         {
@@ -75,19 +83,39 @@ public class DayPhaseManager : MonoBehaviour
         if (sun.transform.position.y < endOfTheDayPhasePoint.position.y)
         {
             newPhase = DayPhaseEnum.Day;
+            phaseProgress = sun.transform.position.y / endOfTheDayPhasePoint.position.y;
         }
         else if (moon.transform.position.y < endOfTheNightPhasePoint.position.y)
         {
             newPhase = DayPhaseEnum.Night;
+            phaseProgress = moon.transform.position.y / endOfTheNightPhasePoint.position.y;
         }
         else
         {
             newPhase = DayPhaseEnum.LateNight;
+            phaseProgress = 1;
         }
         if (currentPhase != newPhase)
         {
             OnDayPhaseChanged?.Invoke(this, newPhase);
         }
         currentPhase = newPhase;
+    }
+
+    protected void UpdatePhaseLight()
+    {
+        Color from;
+        Color to;
+        if (CurrentPhase == DayPhaseEnum.Day)
+        {
+            to = noLightColor;
+            from = dayLightColor;
+        }
+        else
+        {
+            from = noLightColor;
+            to = nightLightColor;
+        }
+        dayPhaseLight.color = Color.Lerp(from, to, phaseProgress);
     }
 }

@@ -9,9 +9,12 @@ public class CameraFollower : MonoBehaviour
     [SerializeField] private Transform topRightCorner;
     [SerializeField] private Transform bottomLeftCorner;
     [SerializeField] private Transform bottomRightCorner;
+    [SerializeField] private float verticalOffset = 2f;
+    [SerializeField] private float cameraSizeForOffset = 15f;
     void Update()
     {
         Vector2 direction = target.position - transform.position;
+        direction += Vector2.up * verticalOffset * camera.orthographicSize / cameraSizeForOffset;
         Vector2 movement = movementSpeed * Time.deltaTime * direction;
         if (CanMove(movement))
         {

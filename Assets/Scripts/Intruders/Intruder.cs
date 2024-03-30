@@ -18,17 +18,22 @@ public abstract class Intruder : Character
     public IntruderConfiguration IntruderConfiguration => Configuration as IntruderConfiguration;
 
     protected IntruderResolveStateEnum intruderResolveState;
+
+    protected DayPhaseManager dayPhaseManager;
     protected override void Awake()
     {
         base.Awake();
         morale = IntruderConfiguration.MaxMorale;
         isTeleportable = true;
-        var dayPhaseManager = FindObjectOfType<DayPhaseManager>();
-        dayPhaseManager.OnDayPhaseChanged += Intruder_OnDayPhaseChanged;
-        if (dayPhaseManager.CurrentPhase == DayPhaseEnum.Night ||
-            dayPhaseManager.CurrentPhase == DayPhaseEnum.LateNight)
+        dayPhaseManager = FindObjectOfType<DayPhaseManager>();
+        if (dayPhaseManager != null)
         {
-            SetMoraleToZero();
+            dayPhaseManager.OnDayPhaseChanged += Intruder_OnDayPhaseChanged;
+            if (dayPhaseManager.CurrentPhase == DayPhaseEnum.Night ||
+                dayPhaseManager.CurrentPhase == DayPhaseEnum.LateNight)
+            {
+                SetMoraleToZero();
+            }
         }
     }
 
@@ -54,7 +59,10 @@ public abstract class Intruder : Character
     protected void OnDestroy()
     {
         floor.RemoveIntruder(this);
-        FindObjectOfType<DayPhaseManager>().OnDayPhaseChanged -= Intruder_OnDayPhaseChanged;
+        if (dayPhaseManager != null)
+        {
+            dayPhaseManager.OnDayPhaseChanged -= Intruder_OnDayPhaseChanged;
+        }
     }
 
     public override void SetFloor(Floor currentFloor)
