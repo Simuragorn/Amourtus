@@ -41,10 +41,10 @@ public class DayPhaseManager : MonoBehaviour
 
     protected void Start()
     {
-        ResetDayPhase();
+        StartNewDay();
     }
 
-    private void ResetDayPhase()
+    public void StartNewDay()
     {
         sun.transform.position = risePoint.position;
         moon.transform.position = risePoint.position;
@@ -54,13 +54,6 @@ public class DayPhaseManager : MonoBehaviour
 
     protected void Update()
     {
-        if (Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            if (currentPhase == DayPhaseEnum.Night || currentPhase == DayPhaseEnum.LateNight)
-            {
-                ResetDayPhase();
-            }
-        }
         UpdatePhase();
         UpdatePhaseLight();
         Vector2 translation = risingSpeed * Time.deltaTime * Vector2.up;

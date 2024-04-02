@@ -31,9 +31,16 @@ public class FloorItem : MonoBehaviour
 
     public void Select()
     {
-        isSelected = true;
-        OnSelected?.Invoke(this, this);
+        isSelected = !isSelected;
         selectedItemBorder.SetActive(isSelected);
+        if (!isSelected)
+        {
+            OnSelected?.Invoke(this, null);
+        }
+        else
+        {
+            OnSelected?.Invoke(this, this);
+        }
     }
     public void Deselect()
     {
