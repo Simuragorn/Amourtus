@@ -9,14 +9,20 @@ public class Floor : MonoBehaviour
     [SerializeField] protected Teleport floorEndTeleport;
     [SerializeField] protected Floor nextFloor;
     [SerializeField] protected Floor previousFloor;
+    [SerializeField] protected string name;
 
     public Teleport FloorStartTeleport => floorStartTeleport;
     public Teleport FloorEndTeleport => floorEndTeleport;
+    public string Name => name;
 
     public event EventHandler<SoulTypeEnum> OnSoulGet;
+    public event EventHandler OnFloorUpdated;
 
     protected List<Insider> insiders = new List<Insider>();
     protected List<Intruder> intruders = new List<Intruder>();
+
+    public IReadOnlyList<Insider> Insiders => insiders;
+    public IReadOnlyList<Intruder> Intruders => intruders;
 
     protected void Awake()
     {
@@ -38,6 +44,7 @@ public class Floor : MonoBehaviour
         {
             intruders.Add(intruder);
             intruder.OnDeath += Intruder_OnDeath;
+            OnFloorUpdated?.Invoke(this, EventArgs.Empty);
         }
     }
 
@@ -52,6 +59,7 @@ public class Floor : MonoBehaviour
         {
             intruders.Remove(intruder);
             intruder.OnDeath -= Intruder_OnDeath;
+            OnFloorUpdated?.Invoke(this, EventArgs.Empty);
         }
     }
 
@@ -60,6 +68,7 @@ public class Floor : MonoBehaviour
         if (!insiders.Contains(insider))
         {
             insiders.Add(insider);
+            OnFloorUpdated?.Invoke(this, EventArgs.Empty);
         }
     }
 
@@ -68,6 +77,7 @@ public class Floor : MonoBehaviour
         if (insiders.Contains(insider))
         {
             insiders.Remove(insider);
+            OnFloorUpdated?.Invoke(this, EventArgs.Empty);
         }
     }
 }

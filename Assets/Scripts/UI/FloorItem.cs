@@ -1,0 +1,43 @@
+using System;
+using TMPro;
+using UnityEngine;
+
+public class FloorItem : MonoBehaviour
+{
+    public event EventHandler<FloorItem> OnSelected;
+
+    [SerializeField] protected TextMeshProUGUI floorItemText;
+    [SerializeField] protected GameObject selectedItemBorder;
+    protected Floor floor;
+    protected bool isSelected;
+
+    public Floor Floor => floor;
+
+    public void SetFloor(Floor currentFloor)
+    {
+        floor = currentFloor;
+        floorItemText.text = floor.Name;
+        selectedItemBorder.SetActive(isSelected);
+        floor.OnFloorUpdated += Floor_OnFloorUpdated;
+    }
+
+    private void Floor_OnFloorUpdated(object sender, EventArgs e)
+    {
+        if (isSelected)
+        {
+            OnSelected?.Invoke(this, this);
+        }
+    }
+
+    public void Select()
+    {
+        isSelected = true;
+        OnSelected?.Invoke(this, this);
+        selectedItemBorder.SetActive(isSelected);
+    }
+    public void Deselect()
+    {
+        isSelected = false;
+        selectedItemBorder.SetActive(isSelected);
+    }
+}

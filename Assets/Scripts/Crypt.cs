@@ -11,6 +11,8 @@ public class Crypt : MonoBehaviour, IContainSaveData<CryptSaveData>
     [SerializeField] private int fame;
     [SerializeField] private List<Floor> floors = new List<Floor>();
 
+    public IReadOnlyList<Floor> Floors => floors;
+
     private void Awake()
     {
         LoadData();
