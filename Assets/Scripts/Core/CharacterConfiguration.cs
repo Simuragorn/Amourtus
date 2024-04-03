@@ -8,9 +8,11 @@ public abstract class CharacterConfiguration : ScriptableObject
     [SerializeField] protected float maxHealth;
     [SerializeField] protected float movementSpeed;
     [SerializeField] protected List<AttackType> attackTypes = new List<AttackType>();
+    [SerializeField] protected Sprite icon;
 
     public string CharacterName => characterName;
     public float MaxHealth => maxHealth;
     public float MovementSpeed => movementSpeed;
     public List<AttackType> AttackTypes => attackTypes;
+    public Sprite Icon => icon;
 }

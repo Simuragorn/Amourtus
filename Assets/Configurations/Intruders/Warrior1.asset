@@ -32,5 +32,6 @@ MonoBehaviour:
     Description: 
     Reloading: 3
     Damage: 5
+  icon: {fileID: 21300000, guid: 0c36095b70ffdd644bb8d6bfdcc1b808, type: 3}
   maxMorale: 50
   soulType: 0

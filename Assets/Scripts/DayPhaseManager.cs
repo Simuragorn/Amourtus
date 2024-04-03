@@ -41,7 +41,7 @@ public class DayPhaseManager : MonoBehaviour
 
     protected void Start()
     {
-        StartNewDay();
+        SetLateNight();
     }
 
     public void StartNewDay()
@@ -50,6 +50,14 @@ public class DayPhaseManager : MonoBehaviour
         moon.transform.position = risePoint.position;
 
         currentPhase = DayPhaseEnum.None;
+    }
+
+    private void SetLateNight()
+    {
+        sun.transform.position = endOfTheDayPhasePoint.position;
+        moon.transform.position = endOfTheNightPhasePoint.position;
+
+        currentPhase = DayPhaseEnum.LateNight;
     }
 
     protected void Update()
