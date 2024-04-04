@@ -4,34 +4,38 @@ public class UIManager : MonoBehaviour
 {
     [SerializeField] private BattleUIManager battleUIManager;
     [SerializeField] private KeeperUIManager keeperUIManager;
+    [SerializeField] private GameManager gameManager;
 
-    [SerializeField] private DayPhaseManager dayPhaseManager;
-    private bool isBattle = false;
+    private GameObject suitableUIManager;
 
     private void Awake()
     {
-        dayPhaseManager.OnDayPhaseChanged += DayPhaseManager_OnDayPhaseChanged;
+        gameManager.OnStateChanged += GameManager_OnStateChanged;
+        suitableUIManager = keeperUIManager.gameObject;
     }
 
-    private void DayPhaseManager_OnDayPhaseChanged(object sender, DayPhaseEnum e)
+    private void GameManager_OnStateChanged(object sender, GameStateEnum e)
     {
-        ChangeGameState(e != DayPhaseEnum.LateNight);
+        battleUIManager.gameObject.SetActive(false);
+        keeperUIManager.gameObject.SetActive(false);
+        if (e == GameStateEnum.Battle)
+        {
+            suitableUIManager = battleUIManager.gameObject;
+        }
+        else if (e == GameStateEnum.Keep)
+        {
+            suitableUIManager = keeperUIManager.gameObject;
+        }
+
     }
 
     void Update()
     {
         bool isUIEnabled = Input.GetKey(KeyCode.Tab);
-        GameObject neededUI = isBattle ? battleUIManager.gameObject : keeperUIManager.gameObject;
-        if (neededUI.gameObject.activeSelf != isUIEnabled)
-        {
-            neededUI.gameObject.SetActive(isUIEnabled);
-        }
-    }
 
-    private void ChangeGameState(bool isBattleStarted)
-    {
-        isBattle = isBattleStarted;
-        battleUIManager.gameObject.SetActive(false);
-        keeperUIManager.gameObject.SetActive(false);
+        if (suitableUIManager.activeSelf != isUIEnabled)
+        {
+            suitableUIManager.SetActive(isUIEnabled);
+        }
     }
 }

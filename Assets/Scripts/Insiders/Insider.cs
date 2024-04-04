@@ -14,6 +14,9 @@ public abstract class Insider : Character
     protected override void HealthModule_OnDeath(object sender, EventArgs eventArgs)
     {
         base.HealthModule_OnDeath(sender, eventArgs);
-        floor.RemoveInsider(this);
+        if (floor != null)
+        {
+            floor.RemoveInsider(this);
+        }
     }
 }

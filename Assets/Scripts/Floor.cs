@@ -3,6 +3,12 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum IntruderRemovingConditionEnum
+{
+    FloorChange,
+    Death,
+    Retreat
+}
 public class Floor : MonoBehaviour
 {
     [SerializeField] protected Teleport floorStartTeleport;
@@ -23,6 +29,8 @@ public class Floor : MonoBehaviour
 
     public IReadOnlyList<Insider> Insiders => insiders;
     public IReadOnlyList<Intruder> Intruders => intruders;
+
+    public event EventHandler<IntruderRemovingConditionEnum> OnIntruderRemoved;
 
     protected void Awake()
     {
@@ -53,13 +61,14 @@ public class Floor : MonoBehaviour
         OnSoulGet?.Invoke(this, (e as Intruder).IntruderConfiguration.SoulType);
     }
 
-    public void RemoveIntruder(Intruder intruder)
+    public void RemoveIntruder(Intruder intruder, IntruderRemovingConditionEnum removingCondition)
     {
         if (intruders.Contains(intruder))
         {
             intruders.Remove(intruder);
             intruder.OnDeath -= Intruder_OnDeath;
             OnFloorUpdated?.Invoke(this, EventArgs.Empty);
+            OnIntruderRemoved?.Invoke(this, removingCondition);
         }
     }
 

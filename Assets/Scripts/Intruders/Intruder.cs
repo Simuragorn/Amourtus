@@ -53,12 +53,12 @@ public abstract class Intruder : Character
     protected override void HealthModule_OnDeath(object sender, EventArgs eventArgs)
     {
         base.HealthModule_OnDeath(sender, eventArgs);
-        floor.RemoveIntruder(this);
+        floor.RemoveIntruder(this, IntruderRemovingConditionEnum.Death);
     }
 
     protected void OnDestroy()
     {
-        floor.RemoveIntruder(this);
+        floor.RemoveIntruder(this, IntruderRemovingConditionEnum.Retreat);
         if (dayPhaseManager != null)
         {
             dayPhaseManager.OnDayPhaseChanged -= Intruder_OnDayPhaseChanged;
@@ -147,7 +147,7 @@ public abstract class Intruder : Character
             return;
         }
         base.Teleport(from, to);
-        floor.RemoveIntruder(this);
+        floor.RemoveIntruder(this, IntruderRemovingConditionEnum.FloorChange);
         if (to != null)
         {
             SetFloor(to.Floor);
