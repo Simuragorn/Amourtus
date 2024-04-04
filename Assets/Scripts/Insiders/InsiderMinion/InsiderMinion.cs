@@ -5,6 +5,5 @@ public class InsiderMinion : Insider
     protected override void Awake()
     {
         base.Awake();
-        isTeleportable = false;
     }
 }

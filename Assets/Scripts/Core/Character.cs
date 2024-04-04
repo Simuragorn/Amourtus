@@ -21,14 +21,11 @@ public abstract class Character : MonoBehaviour
     public event EventHandler<Character> OnDeath;
 
     [SerializeField] protected bool isDead = false;
-    protected float teleportationReloadingLeft;
-    protected bool teleportationAvailable = true;
-    protected bool isTeleportable = true;
-    public bool TeleportationAvailable => teleportationAvailable;
     public AnimationStateEnum AnimationState => animationState;
     public CharacterConfiguration Configuration => configuration;
     protected Floor floor;
-    [SerializeField] protected bool tookHit = false;
+    protected bool tookHit = false;
+    protected Teleport availableTeleport;
 
     protected virtual void Awake()
     {
@@ -47,11 +44,6 @@ public abstract class Character : MonoBehaviour
 
     protected virtual void Update()
     {
-        if (isTeleportable)
-        {
-            teleportationReloadingLeft = Mathf.Max(0, teleportationReloadingLeft - Time.deltaTime);
-            teleportationAvailable = teleportationReloadingLeft <= 0;
-        }
     }
 
     protected void MovementModule_OnMovementStarted(object sender, Vector2 translation)
@@ -105,13 +97,24 @@ public abstract class Character : MonoBehaviour
         transform.localScale = localScale;
     }
 
-    public virtual void Teleport(Teleport from, Teleport to)
+    public virtual void ReachedTeleport(Teleport teleport)
     {
-        if (isTeleportable && to != null)
+        availableTeleport = teleport;
+    }
+
+    public virtual void LeftTeleport(Teleport teleport)
+    {
+        if (availableTeleport == teleport)
         {
-            Vector2 spawnPoint = to.SpawnPoint.position;
-            teleportationAvailable = false;
-            teleportationReloadingLeft = teleportationReloading;
+            availableTeleport = null;
+        }
+    }
+
+    public virtual void TryUseTeleport()
+    {
+        if (availableTeleport != null && availableTeleport.ConnectedTeleport != null)
+        {
+            Vector2 spawnPoint = availableTeleport.ConnectedTeleport.SpawnPoint.position;
             gameObject.transform.position = new Vector2(spawnPoint.x, spawnPoint.y + spawnVerticalOffset);
         }
     }

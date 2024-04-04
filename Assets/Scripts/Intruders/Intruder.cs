@@ -24,7 +24,6 @@ public abstract class Intruder : Character
     {
         base.Awake();
         morale = IntruderConfiguration.MaxMorale;
-        isTeleportable = true;
         dayPhaseManager = FindObjectOfType<DayPhaseManager>();
         if (dayPhaseManager != null)
         {
@@ -133,24 +132,6 @@ public abstract class Intruder : Character
         else
         {
             intruderMovementModule.SetMovingDirection(MovingDirectionType.Left);
-        }
-    }
-    public override void Teleport(Teleport from, Teleport to)
-    {
-        if (
-            (from.TeleportType == TeleportTypeEnum.Start &&
-            intruderResolveState == IntruderResolveStateEnum.Advance) ||
-
-            (from.TeleportType == TeleportTypeEnum.End &&
-            intruderResolveState == IntruderResolveStateEnum.Retreat))
-        {
-            return;
-        }
-        base.Teleport(from, to);
-        floor.RemoveIntruder(this, IntruderRemovingConditionEnum.FloorChange);
-        if (to != null)
-        {
-            SetFloor(to.Floor);
         }
     }
 }

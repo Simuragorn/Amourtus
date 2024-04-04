@@ -12,4 +12,30 @@ public class IntruderMinion : Intruder
     private IntruderMinionAttack intruderMinionAttackModule => attackModule as IntruderMinionAttack;
 
     public IntruderMinionConfiguration IntruderMinionConfiguration => Configuration as IntruderMinionConfiguration;
+
+    public override void ReachedTeleport(Teleport teleport)
+    {
+        base.ReachedTeleport(teleport);
+        Teleport from = availableTeleport;
+        if (
+            (from.TeleportType == TeleportTypeEnum.Start &&
+            intruderResolveState == IntruderResolveStateEnum.Advance) ||
+
+            (from.TeleportType == TeleportTypeEnum.End &&
+            intruderResolveState == IntruderResolveStateEnum.Retreat))
+        {
+            return;
+        }
+        TryUseTeleport();
+    }
+    public override void TryUseTeleport()
+    {
+        Teleport to = availableTeleport.ConnectedTeleport;
+        base.TryUseTeleport();
+        floor.RemoveIntruder(this, IntruderRemovingConditionEnum.FloorChange);
+        if (to != null)
+        {
+            SetFloor(to.Floor);
+        }
+    }
 }

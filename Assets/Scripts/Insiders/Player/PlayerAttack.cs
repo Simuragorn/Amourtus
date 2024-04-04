@@ -9,4 +9,13 @@ public class PlayerAttack : InsiderAttack
     {
         return collider.gameObject.CompareTag(TagConstants.Intruder);
     }
+
+    protected override void Update()
+    {
+        reloadingTimeLeft = Mathf.Max(reloadingTimeLeft - Time.deltaTime, 0);
+        if (Input.GetKey(KeyCode.Mouse0))
+        {
+            TryAttack();
+        }
+    }
 }

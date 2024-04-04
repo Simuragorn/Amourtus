@@ -27,9 +27,18 @@ public class Teleport : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         var character = collision.GetComponent<Character>();
-        if (character != null && character.TeleportationAvailable)
+        if (character != null)
         {
-            character.Teleport(this, ConnectedTeleport);
+            character.ReachedTeleport(this);
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        var character = collision.GetComponent<Character>();
+        if (character != null)
+        {
+            character.LeftTeleport(this);
         }
     }
 }

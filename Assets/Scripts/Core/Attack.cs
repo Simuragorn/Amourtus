@@ -22,7 +22,7 @@ public abstract class Attack : CharacterModule
         attackTypes = character.Configuration.AttackTypes;
     }
 
-    protected void Update()
+    protected virtual void Update()
     {
         reloadingTimeLeft = Mathf.Max(reloadingTimeLeft - Time.deltaTime, 0);
         TryAttack();

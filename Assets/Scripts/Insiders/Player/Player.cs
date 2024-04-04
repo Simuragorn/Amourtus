@@ -8,6 +8,14 @@ public class Player : Insider
     protected override void Awake()
     {
         base.Awake();
-        isTeleportable = true;
+    }
+
+    protected override void Update()
+    {
+        base.Update();
+        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.S))
+        {
+            TryUseTeleport();
+        }
     }
 }
