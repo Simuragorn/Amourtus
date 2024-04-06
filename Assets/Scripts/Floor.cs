@@ -2,6 +2,7 @@ using Assets.Scripts.Dto;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Windows;
 
 public enum IntruderRemovingConditionEnum
 {
@@ -20,20 +21,22 @@ public class Floor : MonoBehaviour
     public Teleport FloorStartTeleport => floorStartTeleport;
     public Teleport FloorEndTeleport => floorEndTeleport;
     public string Name => name;
+    public IReadOnlyList<Insider> Insiders => insiders;
+    public IReadOnlyList<Intruder> Intruders => intruders;
+    public Crypt Crypt => crypt;
 
+    public event EventHandler<IntruderRemovingConditionEnum> OnIntruderRemoved;
     public event EventHandler<SoulTypeEnum> OnSoulGet;
     public event EventHandler OnFloorUpdated;
 
     protected List<Insider> insiders = new List<Insider>();
     protected List<Intruder> intruders = new List<Intruder>();
 
-    public IReadOnlyList<Insider> Insiders => insiders;
-    public IReadOnlyList<Intruder> Intruders => intruders;
-
-    public event EventHandler<IntruderRemovingConditionEnum> OnIntruderRemoved;
+    private Crypt crypt;
 
     protected void Awake()
     {
+        crypt = FindAnyObjectByType<Crypt>();
         floorStartTeleport.Init(this, TeleportTypeEnum.Start);
         floorEndTeleport.Init(this, TeleportTypeEnum.End);
         if (previousFloor != null)
