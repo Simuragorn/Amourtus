@@ -19,4 +19,25 @@ public abstract class Insider : Character
             floor.RemoveInsider(this);
         }
     }
+
+    public override void TryUseTeleport()
+    {
+        base.TryUseTeleport();
+        if (availableTeleport != null && availableTeleport.ConnectedTeleport != null)
+        {
+            var destinationFloor = availableTeleport.ConnectedTeleport.Floor;
+            availableTeleport = null;
+            if (floor != null)
+            {
+                floor.RemoveInsider(this);
+            }
+            SetFloor(destinationFloor);
+        }
+    }
+
+    public override void SetFloor(Floor currentFloor)
+    {
+        base.SetFloor(currentFloor);
+        currentFloor.AddInsider(this);
+    }
 }

@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6053bcf4985f7446898748731471304, type: 3}
   m_Name: Player
   m_EditorClassIdentifier: 
-  CharacterName: "\u0412\u043B\u0430\u0434\u044B\u043A\u0430"
-  maxHealth: 10000
+  characterName: 
+  maxHealth: 10
   movementSpeed: 8
   attackTypes:
   - AnimationState: 1
@@ -32,3 +32,6 @@ MonoBehaviour:
     Description: 
     Reloading: 3
     Damage: 10
+  icon: {fileID: 0}
+  soulType: 0
+  cost: 0

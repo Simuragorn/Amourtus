@@ -56,6 +56,7 @@ public class Floor : MonoBehaviour
             intruders.Add(intruder);
             intruder.OnDeath += Intruder_OnDeath;
             OnFloorUpdated?.Invoke(this, EventArgs.Empty);
+            Debug.Log("Floor updated");
         }
     }
 
