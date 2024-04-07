@@ -45,7 +45,7 @@ public class Crypt : MonoBehaviour, IContainSaveData<CryptSaveData>
     public void TryAddInsider(InsiderConfiguration insiderConfiguration, Floor floor)
     {
         SoulResource soulResource = Souls.First(s => s.SoulType == insiderConfiguration.SoulType);
-        if (soulResource.Amount > insiderConfiguration.Cost)
+        if (soulResource.Amount >= insiderConfiguration.Cost)
         {
             Insider insiderPrefab = insidersPrefabs.Find(i => i.Configuration.CharacterName == insiderConfiguration.CharacterName);
             Insider newInsider = Instantiate(insiderPrefab, floor.FloorEndTeleport.SpawnPoint.position, Quaternion.identity, floor.transform);
