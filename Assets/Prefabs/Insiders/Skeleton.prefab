@@ -324,7 +324,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f281eaa5ef86c754f9942b123145d5b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  configuration: {fileID: 11400000, guid: 7b74b48fa23c32447977ec7a0abb6ebd, type: 2}
+  configuration: {fileID: 11400000, guid: 4df5b8ea48e1bce409c717d05dfbc949, type: 2}
   teleportationReloading: 1
   spawnVerticalOffset: 0
   animator: {fileID: 9113095381334730055}
