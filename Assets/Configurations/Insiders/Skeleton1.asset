@@ -22,16 +22,16 @@ MonoBehaviour:
     Damage: 1
   - AnimationState: 2
     Description: 
-    Reloading: 1
-    Damage: 2
+    Reloading: 0
+    Damage: 1
   - AnimationState: 3
     Description: 
     Reloading: 0
     Damage: 1
   - AnimationState: 4
     Description: 
-    Reloading: 2
-    Damage: 3
+    Reloading: 0
+    Damage: 1
   icon: {fileID: 21300000, guid: 2aaedd5e3e3ea6248bc9a85551cf7d08, type: 3}
   soulType: 0
   cost: 1

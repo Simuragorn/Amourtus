@@ -10,6 +10,9 @@ public class UIManager : MonoBehaviour
 
     private void Awake()
     {
+        battleUIManager.gameObject.SetActive(false);
+        keeperUIManager.gameObject.SetActive(false);
+
         gameManager.OnStateChanged += GameManager_OnStateChanged;
         suitableUIManager = keeperUIManager.gameObject;
     }

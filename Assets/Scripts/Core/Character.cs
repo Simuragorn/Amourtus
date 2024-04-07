@@ -6,6 +6,8 @@ using static Assets.Scripts.Constants.AnimationConstants;
 
 public abstract class Character : MonoBehaviour
 {
+    public Floor Floor => floor;
+
     [SerializeField] protected CharacterConfiguration configuration;
     [SerializeField] protected float teleportationReloading = 1f;
     [SerializeField] protected float spawnVerticalOffset = 0f;

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public enum MovingDirectionType
 {
+    None,
     Left,
     Right
 }

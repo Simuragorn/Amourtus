@@ -51,6 +51,7 @@ public class Crypt : MonoBehaviour, IContainSaveData<CryptSaveData>
             Insider newInsider = Instantiate(insiderPrefab, floor.FloorEndTeleport.SpawnPoint.position, Quaternion.identity, floor.transform);
 
             floor.AddInsider(newInsider);
+            newInsider.SetFloor(floor);
             soulResource.Amount -= insiderConfiguration.Cost;
             OnSoulsCountChanged?.Invoke(this, EventArgs.Empty);
         }

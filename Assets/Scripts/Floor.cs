@@ -80,6 +80,7 @@ public class Floor : MonoBehaviour
         if (!insiders.Contains(insider))
         {
             insiders.Add(insider);
+            insider.OnDeath += Insider_OnDeath;
             OnFloorUpdated?.Invoke(this, EventArgs.Empty);
         }
     }
@@ -89,7 +90,13 @@ public class Floor : MonoBehaviour
         if (insiders.Contains(insider))
         {
             insiders.Remove(insider);
+            insider.OnDeath -= Insider_OnDeath;
             OnFloorUpdated?.Invoke(this, EventArgs.Empty);
         }
+    }
+
+    private void Insider_OnDeath(object sender, Character e)
+    {
+
     }
 }
