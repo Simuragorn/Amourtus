@@ -9,14 +9,27 @@ public enum IntruderRemovingConditionEnum
     Death,
     Retreat
 }
+
+public enum FloorTypeEnum
+{
+    Entrance,
+    Common,
+    Throne
+}
 public class Floor : MonoBehaviour
 {
     [SerializeField] protected Teleport floorStartTeleport;
     [SerializeField] protected Teleport floorEndTeleport;
-    [SerializeField] protected Floor nextFloor;
-    [SerializeField] protected Floor previousFloor;
     [SerializeField] protected string name;
+    [SerializeField] protected CoinTypeEnum coinType;
+    [SerializeField] protected int cost;
 
+    public event EventHandler<IntruderRemovingConditionEnum> OnIntruderRemoved;
+    public event EventHandler<SoulTypeEnum> OnSoulGet;
+    public event EventHandler<CoinTypeEnum> OnCoinGet;
+    public event EventHandler OnFloorUpdated;
+
+    public bool IsPurchased;
     public Teleport FloorStartTeleport => floorStartTeleport;
     public Teleport FloorEndTeleport => floorEndTeleport;
     public string Name => name;
@@ -24,28 +37,39 @@ public class Floor : MonoBehaviour
     public IReadOnlyList<Intruder> Intruders => intruders;
     public Crypt Crypt => crypt;
 
-    public event EventHandler<IntruderRemovingConditionEnum> OnIntruderRemoved;
-    public event EventHandler<SoulTypeEnum> OnSoulGet;
-    public event EventHandler<CoinTypeEnum> OnCoinGet;
-    public event EventHandler OnFloorUpdated;
-
     protected List<Insider> insiders = new List<Insider>();
     protected List<Intruder> intruders = new List<Intruder>();
+    protected Crypt crypt;
+    public FloorTypeEnum Type => type;
+    protected FloorTypeEnum type;
 
-    private Crypt crypt;
+    protected Floor nextFloor;
+    protected Floor previousFloor;
 
-    protected void Awake()
+    private const float FloorsVerticalOffset = 25;
+
+    public void Init(Crypt cryptObject, Floor previousFloorObject, Floor nextFloorObject, FloorTypeEnum floorType)
     {
-        crypt = FindAnyObjectByType<Crypt>();
+        crypt = cryptObject;
+        previousFloor = previousFloorObject;
+        nextFloor = nextFloorObject;
+        type = floorType;
+
         floorStartTeleport.Init(this, TeleportTypeEnum.Start);
         floorEndTeleport.Init(this, TeleportTypeEnum.End);
         if (previousFloor != null)
         {
             floorStartTeleport.ConnectedTeleport = previousFloor.floorEndTeleport;
+            transform.position = new Vector2(previousFloor.transform.position.x, previousFloor.transform.position.y - FloorsVerticalOffset);
         }
         if (nextFloor != null)
         {
             floorEndTeleport.ConnectedTeleport = nextFloor.floorStartTeleport;
+        }
+
+        if (floorType != FloorTypeEnum.Common)
+        {
+            IsPurchased = true;
         }
     }
 

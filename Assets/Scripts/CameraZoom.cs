@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class CameraZoom : MonoBehaviour
 {
@@ -9,7 +10,10 @@ public class CameraZoom : MonoBehaviour
 
     void Update()
     {
-        float zoomDelta = Input.GetAxis("Mouse ScrollWheel") * zoomSpeed;
-        Camera.main.orthographicSize = Mathf.Clamp(camera.orthographicSize - zoomDelta, minZoom, maxZoom);
+        if (!EventSystem.current.IsPointerOverGameObject())
+        {
+            float zoomDelta = Input.GetAxis("Mouse ScrollWheel") * zoomSpeed;
+            Camera.main.orthographicSize = Mathf.Clamp(camera.orthographicSize - zoomDelta, minZoom, maxZoom);
+        }
     }
 }

@@ -8,19 +8,19 @@ public class KeeperFloorsNavigationUIManager : MonoBehaviour
     public event EventHandler<KeeperFloorItem> OnFloorSelected;
 
     private List<KeeperFloorItem> floorItems;
-    [SerializeField] private GridLayoutGroup floorsGrid;
+    [SerializeField] private VerticalLayoutGroup floorsGroup;
     [SerializeField] private KeeperFloorItem floorItemPrefab;
 
     public void SetFloorItems(List<Floor> floors)
     {
         floorItems = new List<KeeperFloorItem>();
-        foreach (Transform child in floorsGrid.transform)
+        foreach (Transform child in floorsGroup.transform)
         {
             Destroy(child.gameObject);
         }
         foreach (var floor in floors)
         {
-            var floorItem = Instantiate(floorItemPrefab, floorsGrid.transform);
+            var floorItem = Instantiate(floorItemPrefab, floorsGroup.transform);
             floorItem.OnSelected += FloorItem_OnSelected;
             floorItem.SetFloor(floor);
 

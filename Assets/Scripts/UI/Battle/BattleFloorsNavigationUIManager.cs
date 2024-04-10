@@ -8,19 +8,19 @@ public class BattleFloorsNavigationUIManager : MonoBehaviour
     public event EventHandler<BattleFloorItem> OnFloorSelected;
 
     private List<BattleFloorItem> floorItems;
-    [SerializeField] private GridLayoutGroup floorsGrid;
+    [SerializeField] private VerticalLayoutGroup floorsGroup;
     [SerializeField] private BattleFloorItem floorItemPrefab;
 
     public void SetFloorItems(List<Floor> floors)
     {
         floorItems = new List<BattleFloorItem>();
-        foreach (Transform child in floorsGrid.transform)
+        foreach (Transform child in floorsGroup.transform)
         {
             Destroy(child.gameObject);
         }
         foreach (var floor in floors)
         {
-            var floorItem = Instantiate(floorItemPrefab, floorsGrid.transform);
+            var floorItem = Instantiate(floorItemPrefab, floorsGroup.transform);
             floorItem.OnSelected += FloorItem_OnSelected;
             floorItem.SetFloor(floor);
 

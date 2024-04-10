@@ -23,10 +23,35 @@ public class Crypt : MonoBehaviour, IContainSaveData<CryptSaveData>
     private void Awake()
     {
         LoadData();
-        foreach (var floor in floors)
+        InitFloors();
+    }
+
+    private void InitFloors()
+    {
+        Floor entranceFloor = floors.First();
+        Floor firstUndegroundFloor = floors[floors.IndexOf(entranceFloor) + 1];
+        Floor throneFloor = floors.Last();
+
+        for (int i = 0; i < floors.Count; i++)
         {
+            Floor floor = floors[i];
+            FloorTypeEnum floorType = FloorTypeEnum.Common;
+            if (i == 0)
+            {
+                floorType = FloorTypeEnum.Entrance;
+            }
+            if (i == floors.Count - 1)
+            {
+                floorType = FloorTypeEnum.Throne;
+            }
             floor.OnSoulGet += Floor_OnSoulGet;
             floor.OnCoinGet += Floor_OnCoinGet;
+            
+            Floor previousFloor = i > 0 ? floors[i - 1] : null;
+            Floor nextFloor = i < floors.Count - 1 ? floors[i + 1] : null;
+            
+            floor.Init(this, previousFloor, nextFloor, floorType);
+            floor.gameObject.SetActive(floor.IsPurchased);
         }
     }
 
