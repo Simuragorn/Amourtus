@@ -10,12 +10,15 @@ public class Crypt : MonoBehaviour, IContainSaveData<CryptSaveData>
 {
     [SerializeField] private List<InsiderMinion> insidersPrefabs;
     [SerializeField] private List<SoulResource> souls = new List<SoulResource>();
+    [SerializeField] private List<CoinResource> coins = new List<CoinResource>();
     [SerializeField] private int fame;
     [SerializeField] private List<Floor> floors = new List<Floor>();
 
     public IReadOnlyList<Floor> Floors => floors;
     public IReadOnlyList<SoulResource> Souls => souls;
+    public IReadOnlyList<CoinResource> Coins => coins;
     public event EventHandler OnSoulsCountChanged;
+    public event EventHandler OnCoinsCountChanged;
 
     private void Awake()
     {
@@ -23,6 +26,7 @@ public class Crypt : MonoBehaviour, IContainSaveData<CryptSaveData>
         foreach (var floor in floors)
         {
             floor.OnSoulGet += Floor_OnSoulGet;
+            floor.OnCoinGet += Floor_OnCoinGet;
         }
     }
 
@@ -30,16 +34,23 @@ public class Crypt : MonoBehaviour, IContainSaveData<CryptSaveData>
     {
         if (Input.GetKeyDown(KeyCode.P))
         {
-            var saveData = new CryptSaveData { Souls = souls, Fame = fame };
+            var saveData = new CryptSaveData { Souls = souls, Coins = coins, Fame = fame };
             SaveData(saveData);
         }
     }
 
     private void Floor_OnSoulGet(object sender, SoulTypeEnum e)
     {
-        var soulAmount = souls.First(s => s.SoulType == e);
-        soulAmount.Amount++;
+        var soulsAmount = souls.First(s => s.SoulType == e);
+        soulsAmount.Amount++;
         OnSoulsCountChanged?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void Floor_OnCoinGet(object sender, CoinTypeEnum e)
+    {
+        var coinsAmount = coins.First(c => c.CoinType == e);
+        coinsAmount.Amount++;
+        OnCoinsCountChanged?.Invoke(this, EventArgs.Empty);
     }
 
     public void TryAddInsider(InsiderConfiguration insiderConfiguration, Floor floor)
@@ -75,6 +86,7 @@ public class Crypt : MonoBehaviour, IContainSaveData<CryptSaveData>
     {
         var saveData = SaveManager.Load<CryptSaveData>(SaveConstants.CryptSaveKey);
         souls = saveData.Souls;
+        coins = saveData.Coins;
         fame = saveData.Fame;
     }
 

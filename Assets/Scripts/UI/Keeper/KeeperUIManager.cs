@@ -20,6 +20,11 @@ public class KeeperUIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI bigSoulsCountText;
     [SerializeField] private TextMeshProUGUI largeSoulsCountText;
 
+    [SerializeField] private TextMeshProUGUI copperCoinsCountText;
+    [SerializeField] private TextMeshProUGUI silverCoinsCountText;
+    [SerializeField] private TextMeshProUGUI goldCoinsCountText;
+    [SerializeField] private TextMeshProUGUI platinumCoinsCountText;
+
     private void Start()
     {
         floorsUIManager.Init(crypt.Floors.ToList());
@@ -31,6 +36,14 @@ public class KeeperUIManager : MonoBehaviour
 
         crypt.OnSoulsCountChanged += Crypt_OnSoulsCountChanged;
         SetSoulsCount();
+
+        crypt.OnCoinsCountChanged += Crypt_OnCoinsCountChanged;
+        SetCoinsCount();
+    }
+
+    private void Crypt_OnCoinsCountChanged(object sender, System.EventArgs e)
+    {
+        SetCoinsCount();
     }
 
     private void Crypt_OnSoulsCountChanged(object sender, System.EventArgs e)
@@ -44,6 +57,14 @@ public class KeeperUIManager : MonoBehaviour
         mediumSoulsCountText.text = crypt.Souls.First(s => s.SoulType == SoulTypeEnum.Medium).Amount.ToString();
         bigSoulsCountText.text = crypt.Souls.First(s => s.SoulType == SoulTypeEnum.Big).Amount.ToString();
         largeSoulsCountText.text = crypt.Souls.First(s => s.SoulType == SoulTypeEnum.Large).Amount.ToString();
+    }
+
+    private void SetCoinsCount()
+    {
+        copperCoinsCountText.text = crypt.Coins.First(c => c.CoinType == CoinTypeEnum.Copper).Amount.ToString();
+        silverCoinsCountText.text = crypt.Coins.First(c => c.CoinType == CoinTypeEnum.Silver).Amount.ToString();
+        goldCoinsCountText.text = crypt.Coins.First(c => c.CoinType == CoinTypeEnum.Gold).Amount.ToString();
+        platinumCoinsCountText.text = crypt.Coins.First(c => c.CoinType == CoinTypeEnum.Platinum).Amount.ToString();
     }
 
     private void StartNewDay()

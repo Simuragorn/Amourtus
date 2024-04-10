@@ -2,7 +2,6 @@ using Assets.Scripts.Dto;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Windows;
 
 public enum IntruderRemovingConditionEnum
 {
@@ -27,6 +26,7 @@ public class Floor : MonoBehaviour
 
     public event EventHandler<IntruderRemovingConditionEnum> OnIntruderRemoved;
     public event EventHandler<SoulTypeEnum> OnSoulGet;
+    public event EventHandler<CoinTypeEnum> OnCoinGet;
     public event EventHandler OnFloorUpdated;
 
     protected List<Insider> insiders = new List<Insider>();
@@ -63,6 +63,7 @@ public class Floor : MonoBehaviour
     private void Intruder_OnDeath(object sender, Character e)
     {
         OnSoulGet?.Invoke(this, (e as Intruder).IntruderConfiguration.SoulType);
+        OnCoinGet?.Invoke(this, (e as Intruder).IntruderConfiguration.CoinType);
     }
 
     public void RemoveIntruder(Intruder intruder, IntruderRemovingConditionEnum removingCondition)

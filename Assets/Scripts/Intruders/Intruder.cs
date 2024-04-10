@@ -40,11 +40,16 @@ public abstract class Intruder : Character
 
     protected void OnDestroy()
     {
-        floor.RemoveIntruder(this, IntruderRemovingConditionEnum.Retreat);
+        if (floor != null)
+        {
+            floor.OnFloorUpdated -= CurrentFloor_OnFloorUpdated;
+        }
         if (dayPhaseManager != null)
         {
             dayPhaseManager.OnDayPhaseChanged -= Intruder_OnDayPhaseChanged;
         }
+        PauseModules(true);
+        floor.RemoveIntruder(this, IntruderRemovingConditionEnum.Retreat);
     }
 
     public override void SetFloor(Floor currentFloor)
@@ -81,7 +86,7 @@ public abstract class Intruder : Character
             availableTeleport = null;
             floor.OnFloorUpdated -= CurrentFloor_OnFloorUpdated;
             floor.RemoveIntruder(this, IntruderRemovingConditionEnum.FloorChange);
-            SetFloor(destinationFloor);            
+            SetFloor(destinationFloor);
         }
     }
 
